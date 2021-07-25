@@ -36,6 +36,8 @@ class ChartView @JvmOverloads constructor(
             data.forEach { anglesArray.add((it / sumOf * 100) / 100 * 360); piesPaths.add(Path()) }
         }
 
+    var colors = intArrayOf(Color.BLACK, Color.BLUE, Color.CYAN)
+
     //ориентация девайса (по умолчанию вертикальная)
     private var orientation = Configuration.ORIENTATION_PORTRAIT
 
@@ -70,6 +72,8 @@ class ChartView @JvmOverloads constructor(
 
     //объект для подсчета пройденных углов при отрисовке частей графика
     private var currentAngle = 0f
+
+
 
     init {
         //перевод dp в пиксели
@@ -182,8 +186,13 @@ class ChartView @JvmOverloads constructor(
             canvas.drawPath(piesPaths[i], fillPaint.apply {
                 style = Paint.Style.FILL
                 //генерю рандомный цвет. дурацкая идея, но её хватает
-                color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256),
-                    rnd.nextInt(256))
+                color = if (colors.size > i){
+                    colors[i]
+                }else{
+                    Color.argb(255, rnd.nextInt(256), rnd.nextInt(256),
+                        rnd.nextInt(256))
+                }
+
             })
             //добавляю пройденный угол к сумме, чтобы потом от неё строить следующие дуги
             currentAngle += anglesArray[i].toFloat()
